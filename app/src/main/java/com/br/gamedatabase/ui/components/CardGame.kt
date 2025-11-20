@@ -27,15 +27,26 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.Icon
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.br.gamedatabase.R
 import com.br.gamedatabase.ui.theme.GameDatabaseTheme
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CardGame() {
+fun CardGame(
+    modifier: Modifier = Modifier,
+    thumbUrl: String,
+    title: String,
+    category: String,
+    rating: Float
+) {
     Card(
-        modifier =Modifier.width(142.dp)
+        modifier =Modifier
+            .width(142.dp)
             .height(188.dp),
         colors = CardColors(
             containerColor =  Color(0xFF636363),
@@ -48,27 +59,37 @@ fun CardGame() {
             Box {
 
                 Box {
-                    Image(
+                    GlideImage(
                         modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(R.drawable.ic_no_image_gallery),
-                        contentDescription = "icone",
+                        model = thumbUrl,
+                        contentDescription = "image",
+                        requestBuilderTransform = { it ->
+                            it.placeholder(R.drawable.ic_no_image_gallery)
+                        },
+                        contentScale = ContentScale.FillBounds
                     )
+//                    Image(
+//                        modifier = Modifier.fillMaxSize(),
+//                        painter = painterResource(R.drawable.ic_no_image_gallery),
+//                        contentDescription = "icone",
+//                    )
                 }
 
                 Box(
-                    modifier = Modifier.align(Alignment.BottomStart)
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
                         .padding(6.dp)
                         .fillMaxWidth()
                 ) {
                     Column {
                         Text(
-                            text = "New Game",
+                            text = title,
                             fontFamily = poppis,
                             color = Color.White,
                             fontSize = 20.sp
                         )
                         Text(
-                            text ="Action",
+                            text = category,
                             fontFamily = poppis,
                             color = Color.White,
                             fontSize = 12.sp
@@ -81,7 +102,8 @@ fun CardGame() {
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(text ="4.5",
+                                Text(
+                                    text = rating.toString(),
                                     fontFamily = poppis,
                                     color = Color.White,
                                     fontSize = 10.sp,
@@ -115,6 +137,12 @@ val poppis = FontFamily(
 @Composable
 private fun CardGamePreview() {
     GameDatabaseTheme {
-        CardGame()
+        CardGame(
+            modifier = Modifier,
+            thumbUrl = "https://fastly.picsum.photos/id/807/200/300.jpg?hmac=9ZZk1Nj28qIecGuVvozSN7I4LW0zotTPqeYfdGR3YdE",
+            title = "New Game",
+            category = "Adventure",
+            rating = 4.8F,
+        )
     }
 }
