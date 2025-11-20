@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.br.gamedatabase.ui.game.GameScreen
 import com.br.gamedatabase.ui.splash.SplashScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ fun AppNavHost() {
             }
         }
         composable(Screen.Game.route) {
-
+            GameScreen()
         }
     }
 
