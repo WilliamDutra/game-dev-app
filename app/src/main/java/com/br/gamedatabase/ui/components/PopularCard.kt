@@ -1,9 +1,12 @@
 package com.br.gamedatabase.ui.components
 
+import android.view.RoundedCorner
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -12,6 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -22,6 +26,8 @@ import com.br.gamedatabase.R
 import com.br.gamedatabase.ui.theme.GameDatabaseTheme
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -51,15 +57,19 @@ fun PopularCard(
             verticalArrangement = Arrangement.Center
         ) {
 
-            Row() {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
 
                 GlideImage(
                     modifier = Modifier.height(90.dp)
                         .width(160.dp),
                     model = thumbUrl,
                     contentDescription = "image",
-                    contentScale = ContentScale.Fit,
+                    contentScale = ContentScale.Crop,
                     requestBuilderTransform = {
+                        it.apply(RequestOptions.bitmapTransform(RoundedCorners(25)))
                         it.placeholder(R.drawable.ic_no_image_gallery)
                     }
                 )

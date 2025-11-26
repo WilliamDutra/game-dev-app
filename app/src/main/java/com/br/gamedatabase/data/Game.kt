@@ -19,9 +19,3 @@ data class Game(
     val genres: List<Genre>
 )
 
-data class Genre(
-    @SerializedName("id")
-    val Id: Int,
-    @SerializedName("Name")
-    val Name: String
-)

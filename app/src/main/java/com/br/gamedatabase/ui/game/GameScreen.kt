@@ -1,6 +1,5 @@
 package com.br.gamedatabase.ui.game
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,12 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
@@ -29,13 +31,23 @@ import com.br.gamedatabase.ui.components.Pill
 import com.br.gamedatabase.ui.components.PopularCard
 import com.br.gamedatabase.ui.components.SearchTextField
 import com.br.gamedatabase.ui.theme.GameDatabaseTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun GameScreen(modifier: Modifier = Modifier) {
 
-    val scrollState = rememberScrollState()
     val verticalScrollState = rememberScrollState()
-    val popularScrollState = rememberScrollState()
+
+    val viewModel: GameListViewModel = koinViewModel()
+    val state = viewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.handle(GameListIntent.LoadCategories)
+        viewModel.handle(GameListIntent.LoadTredingGames)
+        viewModel.handle(GameListIntent.LoadPopularGames)
+    }
+
+
 
     Scaffold(
         containerColor = Color(0xFF171717),
@@ -67,15 +79,13 @@ fun GameScreen(modifier: Modifier = Modifier) {
                 )
             }
 
-            Row(
-                modifier = Modifier.padding(16.dp)
-                    .horizontalScroll(scrollState),
+            LazyRow (
+                modifier = Modifier.padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ){
-                Pill( modifier = Modifier, "Action")
-                Pill( modifier = Modifier, "Adventure")
-                Pill( modifier = Modifier, "Race")
-                Pill( modifier = Modifier, "Platform")
+                items(state.value.categories){
+                    Pill( modifier = Modifier, it.Name)
+                }
             }
 
             Row() {
@@ -91,45 +101,22 @@ fun GameScreen(modifier: Modifier = Modifier) {
 
                     Spacer(modifier.height(12.dp))
 
-                    Row(
-                        modifier = Modifier.horizontalScroll(scrollState),
+                    LazyRow (
+                        modifier = Modifier,
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        CardGame(
-                            modifier = modifier,
-                            title = "Call Of Duty",
-                            category = "FPS",
-                            thumbUrl = "https://fastly.picsum.photos/id/807/200/300.jpg?hmac=9ZZk1Nj28qIecGuVvozSN7I4LW0zotTPqeYfdGR3YdE",
-                            rating = 4.5F
-                        )
-                        CardGame(
-                            modifier = modifier,
-                            title = "Mario Galaxy",
-                            category = "Plataform",
-                            thumbUrl = "https://fastly.picsum.photos/id/807/200/300.jpg?hmac=9ZZk1Nj28qIecGuVvozSN7I4LW0zotTPqeYfdGR3YdE",
-                            rating = 4.9F
-                        )
-                        CardGame(
-                            modifier = modifier,
-                            title = "Mario Kart",
-                            category = "Race",
-                            thumbUrl = "https://fastly.picsum.photos/id/807/200/300.jpg?hmac=9ZZk1Nj28qIecGuVvozSN7I4LW0zotTPqeYfdGR3YdE",
-                            rating = 4.2F
-                        )
-                        CardGame(
-                            modifier = modifier,
-                            title = "Minecraft",
-                            category = "Adventure",
-                            thumbUrl = "https://fastly.picsum.photos/id/738/200/200.jpg?hmac=s1pXxIw4TdDLyUY2RRVeDyhLPUF2xW3AFjdzjVsE6zc",
-                            rating = 4.9F
-                        )
-                        CardGame(
-                            modifier = modifier,
-                            title = "Need for speed",
-                            category = "Race",
-                            thumbUrl = "https://fastly.picsum.photos/id/983/200/200.jpg?hmac=dWGIQKhPUTlF4pkeYDou10SJkQTJDRGf4usmJS38cNY",
-                            rating = 4.1F
-                        )
+
+                        items(state.value.tredingGames) { game ->
+
+                            CardGame(
+                                modifier = modifier,
+                                title = game.name,
+                                category = game.category,
+                                thumbUrl = game.thumbnail,
+                                rating = game.rate
+                            )
+
+                        }
                     }
 
                     Spacer(modifier.height(12.dp))
@@ -144,41 +131,22 @@ fun GameScreen(modifier: Modifier = Modifier) {
 
                     Spacer(modifier.height(12.dp))
 
-                    Row(
-                        modifier = Modifier.horizontalScroll(popularScrollState),
+                    LazyRow(
+                        modifier = Modifier,
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
 
-                        PopularCard(
-                            modifier = modifier,
-                            name = "Minecraft",
-                            rating = 4.9F,
-                            downloads = 40000,
-                            reviews = 4700,
-                            thumbUrl = "https://fastly.picsum.photos/id/640/200/200.jpg?hmac=iFmWtlROU2QVjs0GSK5LASqVkXu6yl8MIQHJrpra6PA",
-                            category = "Adventure, Online"
-                        )
-
-                        PopularCard(
-                            modifier = modifier,
-                            name = "FC Sports",
-                            rating = 4.2F,
-                            downloads = 10000,
-                            reviews = 700,
-                            thumbUrl = "https://fastly.picsum.photos/id/456/400/300.jpg?hmac=45N0vRoFFoGis2BqBTFo0-VumYuCawud0drkuavo-HA",
-                            category = "Sports, Online"
-                        )
-
-                        PopularCard(
-                            modifier = modifier,
-                            name = "Clash Royale",
-                            rating = 4.8F,
-                            downloads = 20000,
-                            reviews = 2700,
-                            thumbUrl = "https://fastly.picsum.photos/id/509/200/200.jpg?hmac=F3VucjvZ_2eEx_ObPM7NJ_Ymq5jESSGCuXo_8japTZc",
-                            category = "Sports, Online, Startegy"
-                        )
-
+                        items(state.value.popularGames) { game ->
+                            PopularCard(
+                                modifier = modifier,
+                                name = game.name,
+                                rating = game.rate,
+                                downloads = game.downlods.toInt(),
+                                reviews = game.reviews.toInt(),
+                                thumbUrl = game.thumbnail,
+                                category = game.category
+                            )
+                        }
                     }
                 }
             }
