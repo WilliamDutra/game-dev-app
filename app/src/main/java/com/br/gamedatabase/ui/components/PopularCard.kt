@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.br.gamedatabase.R
 import com.br.gamedatabase.ui.theme.GameDatabaseTheme
+import com.br.gamedatabase.ui.theme.poppinsRegular
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -84,7 +85,7 @@ fun PopularCard(
 
                     Text(
                         text = category,
-                        fontFamily = poppis,
+                        fontFamily = poppinsRegular,
                         fontSize = 10.sp,
                         color = Color.Black
                     )
@@ -103,7 +104,7 @@ fun PopularCard(
 
                             Text(
                                 text = "Downloads",
-                                fontFamily = poppis,
+                                fontFamily = poppinsRegular,
                                 fontSize = 8.sp,
                                 color = Color.Black
                             )
@@ -119,7 +120,7 @@ fun PopularCard(
 
                             Text(
                                 text ="$reviews Reviews",
-                                fontFamily = poppis,
+                                fontFamily = poppinsRegular,
                                 fontSize = 8.sp,
                                 color = Color.Black)
                         }

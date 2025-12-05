@@ -1,8 +1,5 @@
 package com.br.gamedatabase.ui.components
 
-import android.graphics.drawable.Icon
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,27 +28,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.br.gamedatabase.R
 import com.br.gamedatabase.ui.theme.GameDatabaseTheme
+import com.br.gamedatabase.ui.theme.SecondaryColor
+import com.br.gamedatabase.ui.theme.poppinsRegular
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CardGame(
+fun TrendingCard(
     modifier: Modifier = Modifier,
     thumbUrl: String,
     title: String,
     category: String,
-    rating: Float
+    rating: Float,
+    onClick: ()-> Unit
 ) {
     Card(
         modifier =Modifier
             .width(142.dp)
             .height(188.dp),
+        onClick = onClick,
         colors = CardColors(
-            containerColor =  Color(0xFF636363),
-            contentColor = Color(0xFF636363),
-            disabledContainerColor = Color(0xFF636363),
-            disabledContentColor = Color(0xFF636363)
+            containerColor = SecondaryColor,
+            contentColor = SecondaryColor,
+            disabledContainerColor = SecondaryColor,
+            disabledContentColor = SecondaryColor
         ),
         content = {
 
@@ -68,11 +68,6 @@ fun CardGame(
                         },
                         contentScale = ContentScale.FillBounds
                     )
-//                    Image(
-//                        modifier = Modifier.fillMaxSize(),
-//                        painter = painterResource(R.drawable.ic_no_image_gallery),
-//                        contentDescription = "icone",
-//                    )
                 }
 
                 Box(
@@ -84,13 +79,13 @@ fun CardGame(
                     Column {
                         Text(
                             text = title,
-                            fontFamily = poppis,
+                            fontFamily = poppinsRegular,
                             color = Color.White,
                             fontSize = 20.sp
                         )
                         Text(
                             text = category,
-                            fontFamily = poppis,
+                            fontFamily = poppinsRegular,
                             color = Color.White,
                             fontSize = 12.sp
                         )
@@ -104,7 +99,7 @@ fun CardGame(
                             ) {
                                 Text(
                                     text = rating.toString(),
-                                    fontFamily = poppis,
+                                    fontFamily = poppinsRegular,
                                     color = Color.White,
                                     fontSize = 10.sp,
                                 )
@@ -117,7 +112,7 @@ fun CardGame(
                             }
                             Text(
                                 text ="Install",
-                                fontFamily = poppis,
+                                fontFamily = poppinsRegular,
                                 color = Color.White,
                                 fontSize = 10.sp
                             )
@@ -129,20 +124,17 @@ fun CardGame(
     )
 }
 
-val poppis = FontFamily(
-    Font(R.font.poppinsregular)
-)
-
 @Preview
 @Composable
-private fun CardGamePreview() {
+private fun TrendingCardPreview() {
     GameDatabaseTheme {
-        CardGame(
+        TrendingCard(
             modifier = Modifier,
             thumbUrl = "https://fastly.picsum.photos/id/807/200/300.jpg?hmac=9ZZk1Nj28qIecGuVvozSN7I4LW0zotTPqeYfdGR3YdE",
             title = "New Game",
             category = "Adventure",
             rating = 4.8F,
+            onClick = { }
         )
     }
 }

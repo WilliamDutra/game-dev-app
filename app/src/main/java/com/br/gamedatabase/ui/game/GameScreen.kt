@@ -19,22 +19,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.br.gamedatabase.R
-import com.br.gamedatabase.ui.components.CardGame
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.br.gamedatabase.ui.components.NavigationBarBottom
 import com.br.gamedatabase.ui.components.Pill
 import com.br.gamedatabase.ui.components.PopularCard
 import com.br.gamedatabase.ui.components.SearchTextField
+import com.br.gamedatabase.ui.components.TrendingCard
 import com.br.gamedatabase.ui.theme.GameDatabaseTheme
+import com.br.gamedatabase.ui.theme.PrimaryColor
+import com.br.gamedatabase.ui.theme.poppinsSemiBold
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun GameScreen(modifier: Modifier = Modifier) {
+fun GameScreen(modifier: Modifier = Modifier, navController: NavController) {
 
     val verticalScrollState = rememberScrollState()
 
@@ -50,7 +51,7 @@ fun GameScreen(modifier: Modifier = Modifier) {
 
 
     Scaffold(
-        containerColor = Color(0xFF171717),
+        containerColor = PrimaryColor,
         bottomBar = {
             NavigationBarBottom()
         }
@@ -96,7 +97,7 @@ fun GameScreen(modifier: Modifier = Modifier) {
                         text = "Trending games",
                         color = Color.White,
                         fontSize = 20.sp,
-                        fontFamily = FontFamily(Font(R.font.poppinssemibold))
+                        fontFamily = poppinsSemiBold
                     )
 
                     Spacer(modifier.height(12.dp))
@@ -108,12 +109,16 @@ fun GameScreen(modifier: Modifier = Modifier) {
 
                         items(state.value.tredingGames) { game ->
 
-                            CardGame(
+                            TrendingCard(
                                 modifier = modifier,
                                 title = game.name,
                                 category = game.category,
                                 thumbUrl = game.thumbnail,
-                                rating = game.rate
+                                rating = game.rate,
+                                onClick = {
+                                    navController.navigate("details/${game.id}")
+                                    println("Você clicou no jogo: ${game.name} com o id: ${game.id}")
+                                }
                             )
 
                         }
@@ -126,7 +131,7 @@ fun GameScreen(modifier: Modifier = Modifier) {
                         text = "Popular games",
                         color = Color.White,
                         fontSize = 20.sp,
-                        fontFamily = FontFamily(Font(R.font.poppinssemibold))
+                        fontFamily = poppinsSemiBold
                     )
 
                     Spacer(modifier.height(12.dp))
@@ -159,6 +164,6 @@ fun GameScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun GameScreenPreview() {
     GameDatabaseTheme {
-        GameScreen()
+        GameScreen(navController = rememberNavController())
     }
 }
